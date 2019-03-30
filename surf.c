@@ -1783,6 +1783,10 @@ parseuri(const gchar *uri) {
 			return g_strdup_printf(searchengines[i].uri,
 					       uri + strlen(searchengines[i].token) + 1);
 	}
+  if (!g_str_has_prefix(uri, "localhost") && (!g_strrstr(uri, ".") || g_strrstr(uri, " "))) {
+	  return g_strdup_printf(searchengines[0].uri,
+	            uri);
+  }
 
 	return g_strdup_printf("http://%s", uri);
 }

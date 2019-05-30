@@ -631,16 +631,17 @@ updatetitle(Client *c)
 	char *title;
 	const char *name = c->overtitle ? c->overtitle :
 	                   c->title ? c->title : "";
+	char *mode = (insertmode) ? "I" : "N";
 
 	if (curconfig[ShowIndicators].val.i) {
 		gettogglestats(c);
 		getpagestats(c);
 
 		if (c->progress != 100)
-			title = g_strdup_printf("[%i%%] %s",
-			        c->progress, name);
+			title = g_strdup_printf("(%s) [%i%%] %s",
+			        mode, c->progress, name);
 		else
-			title = g_strdup_printf("%s", name);
+			title = g_strdup_printf("(%s) %s", mode, name);
 
 		gtk_window_set_title(GTK_WINDOW(c->win), title);
 		g_free(title);
@@ -1981,7 +1982,8 @@ find(Client *c, const Arg *a)
 void
 insert(Client *c, const Arg *a)
 {
-		insertmode = (a->i);
+	insertmode = (a->i);
+	updatetitle(c);
 }
 
 void

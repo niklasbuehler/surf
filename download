@@ -1,0 +1,13 @@
+#!/bin/sh
+ACTION=$(echo -e "Open\nSave" | dmenu -l 2 -p "Action:")
+if [[ "$ACTION" == "Open" ]]; then
+	DIR="/tmp"
+	FILE="$(echo "${1##*/}")"
+	wget -P "$DIR" $1 &
+	xdg-open "$DIR/$FILE" &
+else
+	USR=$(whoami)
+	DIR="$(echo -e "/home/$USR/Downloads\n/home/$USR/Documents" | dmenu -l 3 -p "Target dir:")"
+	FILE="$(echo "${1##*/}")"
+	wget -P "$DIR" $1 &
+fi
